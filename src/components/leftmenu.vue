@@ -78,7 +78,7 @@ export default {
             },
             {
               name: '站点定点运动',
-              page: '/'
+              page: 'poito'
             },
             {
               name: '多站点运动',

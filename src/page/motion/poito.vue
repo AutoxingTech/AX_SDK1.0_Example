@@ -32,8 +32,7 @@ export default {
       msg: 'Welcome to AutoXing Robot SDK1.0',
       result: '',
       axRobot: null,
-      axMap: null,
-      clickPointId: null
+      axMap: null
     }
   },
   mounted () {
@@ -74,16 +73,7 @@ export default {
       if (stateObj && stateObj.areaId) {
         this.axMap = await this.axRobot.createMap('map')
         this.axMap.setAreaMap(stateObj.areaId)
-        this.axMap.setClickMapCallback(this.onClickMap)
       }
-    },
-    onClickMap (e) {
-      if (this.clickPointId) {
-        this.axMap.deleteFeature(this.clickPointId)
-      }
-      // console.log(JSON.stringify(e))
-      this.clickPointId = this.axMap.addPoint([e.x, e.y], {color: '#ff0000', radius: 7})
-      this.axRobot.moveTo({x: e.x, y: e.y})
     }
   },
   activated () {

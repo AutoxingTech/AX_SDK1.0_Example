@@ -98,7 +98,6 @@ export default {
     },
     async showMap () {
       let stateObj = await this.axRobot.getState()
-      console.log(JSON.stringify(stateObj))
       if (stateObj && stateObj.areaId) {
         this.parseStateInfo(stateObj)
         this.axMap = await this.axRobot.createMap('map')
@@ -107,6 +106,7 @@ export default {
       }
     },
     parseStateInfo (stateInfo) {
+      // console.log(JSON.stringify(stateInfo))
       this.isManualMode = false
       this.isCharging = false
       this.isRemoteMode = false
