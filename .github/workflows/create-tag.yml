@@ -1,0 +1,13 @@
+name: Create Tag
+on:
+  workflow_dispatch:
+    branches: master
+
+jobs:
+  create_tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: go-semantic-release/action@v1
+        with:
+          github-token: ${{ secrets.CREATE_TAG_TOKEN }}
+          changelog-file: true

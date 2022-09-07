@@ -1,0 +1,52 @@
+name: Delivery
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+#    branches: master
+
+jobs:
+  delivery:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "16.x"
+      - name: Cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Install Dependent
+        run: npm ci
+      - name: Build
+        run: npm run build
+
+      - name: Get Tag Name
+        id: get_tagname
+        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
+
+      - name: Create Docker Image
+        run: |
+          export DOCKER_IMAGE=${{ secrets.ALIYUN_REGISTRY }}/autoxing/${{ secrets.ALIYUN_IMAGE_NAME }}
+          docker build -t ${DOCKER_IMAGE}:${GITHUB_SHA} .
+          docker tag ${DOCKER_IMAGE}:${GITHUB_SHA} ${DOCKER_IMAGE}:${{steps.get_tagname.outputs.VERSION}}
+          docker tag ${DOCKER_IMAGE}:${GITHUB_SHA} ${DOCKER_IMAGE}:latest
+
+      - name: Push Docker Image
+        run: |
+          export DOCKER_IMAGE=${{ secrets.ALIYUN_REGISTRY }}/autoxing/${{ secrets.ALIYUN_IMAGE_NAME }}
+          docker login --username=${{ secrets.ALIYUN_USERNAME }} --password=${{ secrets.ALIYUN_PASSWORD }} ${{ secrets.ALIYUN_REGISTRY }}
+          docker push ${DOCKER_IMAGE}:${GITHUB_SHA}
+          docker push ${DOCKER_IMAGE}:${{steps.get_tagname.outputs.VERSION}}
+          docker push ${DOCKER_IMAGE}:latest
