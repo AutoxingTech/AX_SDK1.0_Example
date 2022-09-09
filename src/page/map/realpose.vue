@@ -160,7 +160,7 @@ export default {
         if (this.robotMarker) {
           this.axMap.updateMarker(this.robotMarker, coordinates, angle)
         } else {
-          this.robotMarker = this.axMap.addMarker('../../static/images/position.png', coordinates, angle)
+          this.robotMarker = this.axMap.addMarker('./static/images/position.png', coordinates, angle)
         }
       }
     }
