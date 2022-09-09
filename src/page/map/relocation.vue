@@ -87,7 +87,7 @@ export default {
       this.showLoading()
       const pose = this.axMap.endEditPose()
       await this.axRobot.resetPose(pose)
-      this.axMap.editPose([pose.x, pose.y], {angle: pose.yaw})
+      this.axMap.editPose([pose.x, pose.y], {yaw: pose.yaw})
       this.hideLoading()
     }
   },

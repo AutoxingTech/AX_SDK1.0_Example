@@ -56,13 +56,17 @@ export default {
 <style scoped>
 .body_left {
   width: 258px;
-  height: 100%;
+  height: calc(100% - 60px);
   float: left;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 .body_right {
   width: calc(100% - 258px);
-  height: 100%;
+  height: calc(100% - 60px);
   float: left;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 </style>
 <style>

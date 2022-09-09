@@ -18,6 +18,12 @@
           <span class="state_label">电量: <span class="state_val">{{battery}}%</span></span>
           <span class="state_label">速度: <span class="state_val">{{speed}}m/s</span></span>
         </div>
+        <div class="mode_banner">
+          <div class="btn_tools bg_btn">自动模式</div>
+          <div class="btn_tools bg_btn">手动模式</div>
+          <div class="btn_tools bg_btn">远控模式</div>
+          <div class="btn_tools bg_btn">急停模式</div>
+        </div>
       </div>
     </div>
     <div style="width: 100%;height: 20px;"></div>
@@ -29,7 +35,7 @@ import { AXRobot, AppMode } from '@autoxing/robot-js-sdk-dev'
 import { Configs } from '../../../static/js/configs'
 
 export default {
-  name: 'realpose',
+  name: 'motionmode',
   props: {
     showLoading: {
       type: Function,
@@ -82,6 +88,7 @@ export default {
           success: (res) => {
             this.result = 'Connection succeeded, robot ID is ' + res.robotId
             this.axRobot.subscribeRealState({onStateChanged: this.onStateChanged})
+            this.axRobot.subscribeTaskState({onTaskChanged: this.onTaskChanged})
             this.axRobot.setEnableTrack(true)
             this.hideLoading()
             this.showMap()
@@ -163,6 +170,9 @@ export default {
           this.robotMarker = this.axMap.addMarker('../../static/images/position.png', coordinates, angle)
         }
       }
+    },
+    onTaskChanged (obj) {
+      console.log(JSON.stringify(obj))
     }
   },
   activated () {
@@ -262,5 +272,31 @@ export default {
 }
 .state_val {
   font-weight: bold;
+}
+.mode_banner {
+  position: absolute;
+  top: 45px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+.btn_tools {
+  min-width: 80px;
+  height: 28px;
+  font-size: 14px;
+  color: #fff;
+  border-radius: 3px;
+  background: #26ac28;
+  padding: 0px 10px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 7px;
+}
+.btn_tools:active {
+  background: #249826;
 }
 </style>

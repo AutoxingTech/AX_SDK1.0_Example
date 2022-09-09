@@ -2,40 +2,32 @@
   <div class="content_box">
     <h1>{{ msg }}</h1>
     <div class="mode_box">
-      <div>当前地图：</div>
+      <div>选择充电桩回桩充电：</div>
       <div class="result_banner">{{ result }}</div>
       <div class="map_banner div_center">
-        <div id="map" style="width: 100%;height: 500px"></div>
+        <div id="map" style="width:100%;height:500px"></div>
         <div class="tools_banner">
-          <div class="btn_tools bg_btn angle_btn" @click="changeMap();">切换地图</div>
+          <div class="btn_tools bg_btn" @click="selectCharge();">选择充电桩</div>
         </div>
       </div>
     </div>
     <Dialog
-      title="切换地图"
-      :width="520"
+      title="选择充电桩"
+      :width="535"
       :footer="true"
       cancelText="关闭"
       okText=""
       @close="onClose"
       @cancel="onCancel"
-      @ok="onConfirm"
       v-show="showDialog">
-      <div class="area_container">
-        <div v-for="(item,i) in areaList" :key="i" class="area_banner">
-          <div :class="'area_pic_box bg_btn'+(i===selectedIndex?' cur_area_box':'')" @click="selectArea(i);">
-            <img :src="item.imgUrl" :mode="item.isHeightFix?'heightFix':'widthFix'"
-              :class="item.isHeightFix?'area_pic_h':'area_pic_w'" />
-          </div>
-          <div class="area_info_box">
-            <div class="area_name">{{item.name}}</div>
-            <div class="area_uid">UID: {{item.id}}</div>
-            <div class="area_createtime">Create Time: {{formatTime(item.createTime)}}</div>
-            <div class="area_tools">
-              <div class="btn_tools bg_btn use_btn" @click="doUseMap(i);">USE</div>
-            </div>
-          </div>
+      <div class="poi_container">
+        <div v-for="(item,i) in poiList" :key="i" class="poi_box">
+          <div class="poi_name">{{item.name}}</div>
+          <div class="poi_type">类型：{{item.type}}</div>
+          <div class="poi_pose">x: {{item.x}}, y: {{item.y}}, yaw: {{item.yaw}}</div>
+          <div class="btn_tools bg_btn use_btn" @click="goHome(i);">GO HOME</div>
         </div>
+        <div class="clear"></div>
       </div>
     </Dialog>
   </div>
@@ -47,7 +39,7 @@ import { Configs } from '../../../static/js/configs'
 import Dialog from '../../components/Dialog'
 
 export default {
-  name: 'changemap',
+  name: 'gohome',
   components: {Dialog},
   props: {
     showLoading: {
@@ -66,9 +58,7 @@ export default {
       axRobot: null,
       axMap: null,
       showDialog: false,
-      curAreaId: null,
-      areaList: [],
-      selectedIndex: -1
+      poiList: []
     }
   },
   mounted () {
@@ -90,6 +80,8 @@ export default {
           robotId: Configs.robotId,
           success: (res) => {
             this.result = 'Connection succeeded, robot ID is ' + res.robotId
+            this.axRobot.subscribeRealState({onStateChanged: this.onStateChanged})
+            this.axRobot.setEnableTrack(true)
             this.hideLoading()
             this.showMap()
           },
@@ -107,99 +99,35 @@ export default {
     async showMap () {
       let stateObj = await this.axRobot.getState()
       if (stateObj && stateObj.areaId) {
-        this.curAreaId = stateObj.areaId
         this.axMap = await this.axRobot.createMap('map')
         this.axMap.setAreaMap(stateObj.areaId)
       }
     },
-    changeMap () {
-      if (this.areaList.length > 0) {
-        this.selectedIndex = -1
-        let len = this.areaList.length
+    selectCharge () {
+      let placeData = this.axRobot.getPlaceList()
+      this.poiList = []
+      if (placeData && placeData.features) {
+        let len = placeData.features.length
         for (let i = 0; i < len; i++) {
-          let itemObj = this.areaList[i]
-          if (itemObj.id === this.curAreaId) {
-            this.selectedIndex = i
-            break
+          let poiObj = placeData.features[i]
+          if (parseInt(poiObj.properties.type) !== 9) {
+            continue
           }
-        }
-        this.onDialog()
-        return
-      }
-      this.showLoading()
-      let that = this
-      this.axRobot.getAreaList().then(r => {
-        if (r.status === 200) {
-          let list = r.data.list
-          that.setAreaList(list)
-        }
-        this.hideLoading()
-        this.onDialog()
-      })
-    },
-    getImgSize (url) {
-      return new Promise((resolve, reject) => {
-        let imgObj = new Image()
-        imgObj.src = url
-        imgObj.onload = () => {
-          resolve([imgObj.width, imgObj.height])
-        }
-      })
-    },
-    async setAreaList (list) {
-      this.areaList = []
-      if (list) {
-        let len = list.length
-        for (let i = 0; i < len; i++) {
-          let itemObj = list[i]
-          let picBuf = await this.axRobot.getAreaPic(itemObj.id)
-          itemObj.imgUrl = URL.createObjectURL(new Blob([picBuf], {
-            type: 'image/png'
-          }))
-          if (itemObj.id === this.curAreaId) {
-            this.selectedIndex = i
+          let coordinates = poiObj.geometry.coordinates
+          let x = parseFloat(coordinates[0].toFixed(2))
+          let y = parseFloat(coordinates[1].toFixed(2))
+          let yaw = 0
+          if (typeof poiObj.properties.yaw !== 'undefined') {
+            yaw = parseFloat(parseFloat(poiObj.properties.yaw).toFixed(0))
           }
-          let imgSizes = await this.getImgSize(itemObj.imgUrl)
-          itemObj.isHeightFix = true
-          if ((imgSizes[0] / imgSizes[1]) > (180 / 120)) {
-            itemObj.isHeightFix = false
-          }
-          this.areaList.push(itemObj)
+          this.poiList.push({name: poiObj.properties.name,
+            type: poiObj.properties.type,
+            yaw: yaw,
+            x: x,
+            y: y})
         }
       }
-    },
-    selectArea (index) {
-      this.selectedIndex = index
-    },
-    async doUseMap (index) {
-      let itemObj = this.areaList[index]
-      if (this.curAreaId === itemObj.id) {
-        this.showDialog = false
-        return
-      }
-      this.showLoading()
-      let isOk = await this.axRobot.resetMap(itemObj.id)
-      if (isOk === true) {
-        this.showDialog = false
-        this.curAreaId = itemObj.id
-        this.axMap.setAreaMap(itemObj.id)
-      }
-      this.hideLoading()
-    },
-    addZero (i) {
-      return i < 10 ? '0' + i : '' + i
-    },
-    formatTime (timestamp) {
-      let date = new Date()
-      date.setTime(timestamp)
-      let h = date.getHours()
-      let mm = date.getMinutes()
-      let s = date.getSeconds()
-      let y = date.getFullYear()
-      let m = date.getMonth() + 1
-      let d = date.getDate()
-      return y + '-' + this.addZero(m) + '-' + this.addZero(d) +
-        ' ' + this.addZero(h) + ':' + this.addZero(mm) + ':' + this.addZero(s)
+      this.onDialog()
     },
     onDialog () { // 调用Dialog弹出对话框
       this.showDialog = true
@@ -210,8 +138,25 @@ export default {
     onCancel () { // “取消”按钮回调
       this.showDialog = false
     },
-    onConfirm () { // “确定”按钮回调
+    goHome (index) {
+      if (!this.axMap) {
+        return
+      }
       this.showDialog = false
+      let poiObj = this.poiList[index]
+      this.axMap.setMapCenter([poiObj.x, poiObj.y])
+      this.axRobot.goHome({x: poiObj.x, y: poiObj.y, yaw: poiObj.yaw})
+    },
+    onStateChanged (stateInfo) {
+      if (this.axMap) {
+        let coordinates = [stateInfo.x, stateInfo.y]
+        let angle = stateInfo.yaw * 180 / Math.PI
+        if (this.robotMarker) {
+          this.axMap.updateMarker(this.robotMarker, coordinates, angle)
+        } else {
+          this.robotMarker = this.axMap.addMarker('../../static/images/position.png', coordinates, angle)
+        }
+      }
     }
   },
   activated () {
@@ -310,76 +255,56 @@ export default {
 .tools_banner {
   position: absolute;
   top: 0px;
-  left: 0px;
-  width: 100%;
+  right: 0px;
   padding: 10px;
   box-sizing: border-box;
   display: flex;
-}
-.angle_btn {
-  margin-right: 8px;
-}
-.area_container {
-  padding: 24px;
-}
-.area_banner {
-  width: 100%;
-  display: flex;
-}
-.area_pic_box {
-  width: 180px;
-  height: 120px;
-  display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #333;
-  margin: 5px 0px;
-  border-radius: 5px;
 }
-.cur_area_box {
-  border: 2px solid #ff0000;
-}
-.area_pic_h {
-  width: 0;
-  display: block;
-  height: 100%;
-  width: auto;
-}
-.area_pic_w {
-  height: 0;
-  display: block;
+.poi_container {
   width: 100%;
-  height: auto;
-}
-.area_info_box {
-  width: calc(100% - 180px);
-  height: 120px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  flex-direction: column;
-  padding: 0px 20px;
+  padding: 10px;
   box-sizing: border-box;
 }
-.area_name {
+.poi_box {
+  float: left;
+  width: 240px;
+  height: 130px;
+  padding: 14px;
+  border-radius: 3px;
+  box-sizing: border-box;
+  background: #fafafb;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 5px;
+}
+.poi_name {
+  width: 100%;
+  height: 24px;
   font-size: 16px;
   font-weight: bold;
   color: #353535;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
 }
-.area_uid {
+.poi_type {
+  height: 21px;
   font-size: 14px;
   color: #8f9bb3;
 }
-.area_createtime {
+.poi_pose {
+  height: 21px;
   font-size: 14px;
   color: #222;
-}
-.area_tools {
-  font-size: 14px;
-  color: #222;
+  user-select: text;
 }
 .use_btn {
-  min-width: 50px;
+  width: 100%;
   height: 30px;
   font-weight: bold;
   margin-top: 5px;

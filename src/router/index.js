@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import init from '@/page/init'
 import connect from '@/page/connect'
+import motionmode from '@/page/motion/motionmode'
 import rocker from '@/page/motion/rocker'
 import step from '@/page/motion/step'
 import mapto from '@/page/motion/mapto'
@@ -11,6 +12,10 @@ import changemap from '@/page/map/changemap'
 import updatemap from '@/page/map/updatemap'
 import realpose from '@/page/map/realpose'
 import poito from '@/page/motion/poito'
+import multipoito from '@/page/motion/multipoito'
+import gohome from '@/page/motion/gohome'
+import poiaction from '@/page/task/poiaction'
+import numtask from '@/page/task/numtask'
 
 Vue.use(Router)
 
@@ -25,6 +30,11 @@ export default new Router({
       path: '/connect',
       name: 'connect',
       component: connect
+    },
+    {
+      path: '/motionmode',
+      name: 'motionmode',
+      component: motionmode
     },
     {
       path: '/rocker',
@@ -70,6 +80,26 @@ export default new Router({
       path: '/poito',
       name: 'poito',
       component: poito
+    },
+    {
+      path: '/multipoito',
+      name: 'multipoito',
+      component: multipoito
+    },
+    {
+      path: '/gohome',
+      name: 'gohome',
+      component: gohome
+    },
+    {
+      path: '/poiaction',
+      name: 'poiaction',
+      component: poiaction
+    },
+    {
+      path: '/numtask',
+      name: 'numtask',
+      component: numtask
     }
   ]
 })

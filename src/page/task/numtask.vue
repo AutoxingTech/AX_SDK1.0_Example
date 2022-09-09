@@ -2,30 +2,39 @@
   <div class="content_box">
     <h1>{{ msg }}</h1>
     <div class="mode_box">
-      <div>选择Poi移动机器人：</div>
+      <div>机器人按次数执行任务：</div>
       <div class="result_banner">{{ result }}</div>
       <div class="map_banner div_center">
         <div id="map" style="width:100%;height:500px"></div>
         <div class="tools_banner">
-          <div class="btn_tools bg_btn" @click="selectPoi();">选择站点</div>
+          <div class="btn_tools bg_btn" @click="selectNum();">选择次数：{{runNum===0?'循环':runNum+'次'}}</div>
+          <div class="btn_tools bg_btn" @click="selectPoi();">选择站点（多选）</div>
         </div>
       </div>
     </div>
     <Dialog
-      title="选择站点"
-      :width="535"
+      :title="isNumSelect?'选择任务执行次数':'选择站点（多选）'"
+      :width="dialogWidth"
       :footer="true"
-      cancelText="关闭"
-      okText=""
+      cancelText="取消"
+      :okText="isNumSelect?'':'确定'"
       @close="onClose"
       @cancel="onCancel"
+      @ok="onConfirm"
       v-show="showDialog">
-      <div class="poi_container">
-        <div v-for="(item,i) in poiList" :key="i" class="poi_box">
+      <div v-if="isNumSelect" class="poi_container">
+        <div v-for="(item,i) in numList" :key="i" class="num_banner poi_btn" @click="doSelectNum(i);">
+          {{item.desc}}
+        </div>
+      </div>
+      <div v-else class="poi_container">
+        <div v-for="(item,i) in poiList" :key="i"
+          :class="'poi_box poi_btn'+(item.isSelected?' poi_box_selected':'')"
+          @click="doSelect(i);">
           <div class="poi_name">{{item.name}}</div>
           <div class="poi_type">类型：{{item.type}}</div>
           <div class="poi_pose">x: {{item.x}}, y: {{item.y}}, yaw: {{item.yaw}}</div>
-          <div class="btn_tools bg_btn use_btn" @click="moveTo(i);">GO HERE</div>
+          <div v-if="item.isSelected" class="sort_num">{{getSelectedIndex(i)}}</div>
         </div>
         <div class="clear"></div>
       </div>
@@ -39,7 +48,7 @@ import { Configs } from '../../../static/js/configs'
 import Dialog from '../../components/Dialog'
 
 export default {
-  name: 'poito',
+  name: 'numtask',
   components: {Dialog},
   props: {
     showLoading: {
@@ -47,6 +56,10 @@ export default {
       default: null
     },
     hideLoading: {
+      type: Function,
+      default: null
+    },
+    toast: {
       type: Function,
       default: null
     }
@@ -58,7 +71,18 @@ export default {
       axRobot: null,
       axMap: null,
       showDialog: false,
-      poiList: []
+      poiList: [],
+      selecteds: [],
+      numList: [
+        {desc: '1次', num: 1},
+        {desc: '2次', num: 2},
+        {desc: '3次', num: 3},
+        {desc: '5次', num: 5},
+        {desc: '8次', num: 8},
+        {desc: '循环', num: 0}],
+      runNum: 1,
+      isNumSelect: false,
+      dialogWidth: 535
     }
   },
   mounted () {
@@ -103,7 +127,31 @@ export default {
         this.axMap.setAreaMap(stateObj.areaId)
       }
     },
+    doSelectNum (index) {
+      this.runNum = this.numList[index].num
+      this.showDialog = false
+    },
+    doSelect (index) {
+      let pos = this.selecteds.indexOf(index)
+      if (pos !== -1) {
+        this.selecteds.splice(pos, 1)
+        this.poiList[index].isSelected = false
+      } else {
+        this.selecteds.push(index)
+        this.poiList[index].isSelected = true
+      }
+    },
+    getSelectedIndex (index) {
+      return this.selecteds.indexOf(index) + 1
+    },
+    selectNum () {
+      this.isNumSelect = true
+      this.dialogWidth = 300
+      this.onDialog()
+    },
     selectPoi () {
+      this.isNumSelect = false
+      this.dialogWidth = 535
       let placeData = this.axRobot.getPlaceList()
       this.poiList = []
       if (placeData && placeData.features) {
@@ -121,12 +169,14 @@ export default {
             type: poiObj.properties.type,
             yaw: yaw,
             x: x,
-            y: y})
+            y: y,
+            isSelected: false})
         }
       }
       this.onDialog()
     },
     onDialog () { // 调用Dialog弹出对话框
+      this.selecteds = []
       this.showDialog = true
     },
     onClose () { // 关闭dialog
@@ -135,14 +185,28 @@ export default {
     onCancel () { // “取消”按钮回调
       this.showDialog = false
     },
-    moveTo (index) {
-      if (!this.axMap) {
+    async onConfirm () {
+      if (this.selecteds.length === 0) {
+        return
+      }
+      this.showLoading()
+      let task = {
+        name: 'test task',
+        runNum: this.runNum,
+        pts: []
+      }
+      let len = this.selecteds.length
+      for (let i = 0; i < len; i++) {
+        let poiObj = this.poiList[this.selecteds[i]]
+        task.pts.push({x: poiObj.x, y: poiObj.y, yaw: poiObj.yaw, ext: {name: poiObj.name}})
+      }
+      let isOk = await this.axRobot.startTask(task)
+      this.hideLoading()
+      if (!isOk) {
+        this.toast('Run task fail.')
         return
       }
       this.showDialog = false
-      let poiObj = this.poiList[index]
-      this.axMap.setMapCenter([poiObj.x, poiObj.y])
-      this.axRobot.moveTo({x: poiObj.x, y: poiObj.y})
     },
     onStateChanged (stateInfo) {
       if (this.axMap) {
@@ -245,6 +309,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: 10px;
 }
 .btn_tools:active {
   background: #249826;
@@ -265,9 +330,10 @@ export default {
   box-sizing: border-box;
 }
 .poi_box {
+  position: relative;
   float: left;
   width: 240px;
-  height: 130px;
+  height: 90px;
   padding: 14px;
   border-radius: 3px;
   box-sizing: border-box;
@@ -277,6 +343,19 @@ export default {
   align-items: flex-start;
   justify-content: center;
   margin: 5px;
+}
+.poi_box_selected {
+  background: #e0e0f3;
+}
+.poi_btn {
+  border: none;
+  outline: none;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  cursor: pointer;
+}
+.poi_btn:active {
+  background: #e0e0f3;
 }
 .poi_name {
   width: 100%;
@@ -300,10 +379,32 @@ export default {
   color: #222;
   user-select: text;
 }
-.use_btn {
-  width: 100%;
-  height: 30px;
+.sort_num {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 25px;
+  height: 25px;
+  font-size: 14px;
   font-weight: bold;
-  margin-top: 5px;
+  color: #fff;
+  background: #ff0000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+.num_banner {
+  width: 100%;
+  font-size: 14px;
+  color: #353535;
+  padding: 14px;
+  border-radius: 3px;
+  box-sizing: border-box;
+  background: #fafafb;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 5px;
 }
 </style>

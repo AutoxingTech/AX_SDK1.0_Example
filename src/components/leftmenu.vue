@@ -12,6 +12,7 @@
         {{child.name}}
       </div>
     </div>
+    <div style="width: 100%;height: 20px;"></div>
   </div>
 </template>
 
@@ -65,6 +66,10 @@ export default {
           page: '/',
           childs: [
             {
+              name: '切换运动模式',
+              page: 'motionmode'
+            },
+            {
               name: '单步运动',
               page: 'step'
             },
@@ -82,11 +87,53 @@ export default {
             },
             {
               name: '多站点运动',
-              page: '/'
+              page: 'multipoito'
             },
             {
               name: '回桩充电',
-              page: '/'
+              page: 'gohome'
+            }
+          ]
+        },
+        {
+          name: '动作任务',
+          page: '/',
+          childs: [
+            {
+              name: '站点动作任务',
+              page: 'poiaction'
+            },
+            {
+              name: '按次数执行任务',
+              page: 'numtask'
+            },
+            {
+              name: '任务结束自动回充',
+              page: ''
+            },
+            {
+              name: '跨层执行任务',
+              page: ''
+            },
+            {
+              name: '配送任务',
+              page: ''
+            },
+            {
+              name: '消杀任务',
+              page: ''
+            },
+            {
+              name: '写字楼任务',
+              page: ''
+            },
+            {
+              name: '引领任务',
+              page: ''
+            },
+            {
+              name: '电话取物任务',
+              page: ''
             }
           ]
         }
@@ -163,7 +210,7 @@ export default {
         return
       }
       let itemObj = this.menuItems[index].childs[childIndex]
-      if (itemObj.page) {
+      if (itemObj.page !== '') {
         this.menuIndex = index
         this.childIndex = childIndex
         this.showPage(itemObj.page)

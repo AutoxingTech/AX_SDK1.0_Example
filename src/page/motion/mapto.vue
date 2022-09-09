@@ -55,6 +55,8 @@ export default {
           robotId: Configs.robotId,
           success: (res) => {
             this.result = 'Connection succeeded, robot ID is ' + res.robotId
+            this.axRobot.subscribeRealState({onStateChanged: this.onStateChanged})
+            this.axRobot.setEnableTrack(true)
             this.hideLoading()
             this.showMap()
           },
@@ -78,12 +80,29 @@ export default {
       }
     },
     onClickMap (e) {
-      if (this.clickPointId) {
-        this.axMap.deleteFeature(this.clickPointId)
+      if (e.type === 'LayerPoint') {
+        let x = e.data.geometry.coordinates[0]
+        let y = e.data.geometry.coordinates[1]
+        if (this.axMap) {
+          if (this.clickPointId) {
+            this.axMap.deleteFeature(this.clickPointId)
+            this.clickPointId = null
+          }
+          this.clickPointId = this.axMap.addPoint([x, y], {color: '#ff0000', radius: 7})
+        }
+        this.axRobot.moveTo({x: x, y: y})
       }
-      // console.log(JSON.stringify(e))
-      this.clickPointId = this.axMap.addPoint([e.x, e.y], {color: '#ff0000', radius: 7})
-      this.axRobot.moveTo({x: e.x, y: e.y})
+    },
+    onStateChanged (stateInfo) {
+      if (this.axMap) {
+        let coordinates = [stateInfo.x, stateInfo.y]
+        let angle = stateInfo.yaw * 180 / Math.PI
+        if (this.robotMarker) {
+          this.axMap.updateMarker(this.robotMarker, coordinates, angle)
+        } else {
+          this.robotMarker = this.axMap.addMarker('../../static/images/position.png', coordinates, angle)
+        }
+      }
     }
   },
   activated () {

@@ -91,7 +91,7 @@ export default {
 }
 .m-modal-body {
   height: 324px;
-  padding: 24px;
+  /* padding: 24px; */
   font-size: 16px;
   line-height: 1.5;
   word-wrap: break-word;
