@@ -19,10 +19,9 @@
           <span class="state_label">速度: <span class="state_val">{{speed}}m/s</span></span>
         </div>
         <div class="mode_banner">
-          <div class="btn_tools bg_btn">自动模式</div>
-          <div class="btn_tools bg_btn">手动模式</div>
-          <div class="btn_tools bg_btn">远控模式</div>
-          <div class="btn_tools bg_btn">急停模式</div>
+          <div class="btn_tools bg_btn" @click="changeMode(0);">自动模式</div>
+          <div class="btn_tools bg_btn" @click="changeMode(1);">手动模式</div>
+          <div class="btn_tools bg_btn" @click="setEmergency();">{{isEmergencyStop?'取消急停':'急停模式'}}</div>
         </div>
       </div>
     </div>
@@ -31,7 +30,7 @@
 </template>
 
 <script>
-import { AXRobot, AppMode } from '@autoxing/robot-js-sdk-dev'
+import { AXRobot, AppMode, MotionType, EmergencyType } from '@autoxing/robot-js-sdk-dev'
 import { Configs } from '../../../static/js/configs'
 
 export default {
@@ -111,6 +110,7 @@ export default {
         this.axMap = await this.axRobot.createMap('map')
         this.axMap.setAreaMap(stateObj.areaId)
         this.axMap.setMapCenter([stateObj.x, stateObj.y])
+        console.log(JSON.stringify(stateObj))
         this.showRobotLoc(stateObj)
       }
     },
@@ -170,6 +170,28 @@ export default {
           this.robotMarker = this.axMap.addMarker('../../static/images/position.png', coordinates, angle)
         }
       }
+    },
+    async changeMode (flag) {
+      this.showLoading()
+      let isOk = false
+      if (flag === 0) {
+        isOk = await this.axRobot.motionFor(MotionType.Auto)
+      } else {
+        isOk = await this.axRobot.motionFor(MotionType.Manual)
+      }
+      console.log('isOk=' + isOk)
+      this.hideLoading()
+    },
+    async setEmergency () {
+      this.showLoading()
+      let isOk = false
+      if (this.isEmergencyStop === true) {
+        isOk = await this.axRobot.setEmergency(EmergencyType.Stop)
+      } else {
+        isOk = await this.axRobot.setEmergency(EmergencyType.Start)
+      }
+      console.log('isOk=' + isOk)
+      this.hideLoading()
     },
     onTaskChanged (obj) {
       console.log(JSON.stringify(obj))
