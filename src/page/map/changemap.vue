@@ -86,23 +86,20 @@ export default {
       )
       let isOk = await this.axRobot.init()
       if (isOk) {
-        this.axRobot.connectRobot({
-          robotId: Configs.robotId,
-          success: (res) => {
-            this.result = 'Connection succeeded, robot ID is ' + res.robotId
-            this.hideLoading()
-            this.showMap()
-          },
-          fail: (res) => {
-            this.result = 'Connection failed, ' + res.errText
-            this.hideLoading()
-          }
+        let res = await this.axRobot.connectRobot({
+          robotId: Configs.robotId
         })
+        if (res.errCode === 0) {
+          this.result = 'Connection succeeded, robot ID is ' + res.robotId
+          this.showMap()
+        } else {
+          this.result = 'Connection failed, ' + res.errText
+        }
       } else {
         this.result =
           'Initialization failed. Please check whether appid and appsecret are correct.'
-        this.hideLoading()
       }
+      this.hideLoading()
     },
     async showMap () {
       let stateObj = await this.axRobot.getState()

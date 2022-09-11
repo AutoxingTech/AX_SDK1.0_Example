@@ -51,25 +51,22 @@ export default {
       )
       let isOk = await this.axRobot.init()
       if (isOk) {
-        this.axRobot.connectRobot({
-          robotId: Configs.robotId,
-          success: (res) => {
-            this.result = 'Connection succeeded, robot ID is ' + res.robotId
-            this.axRobot.subscribeRealState({onStateChanged: this.onStateChanged})
-            this.axRobot.setEnableTrack(true)
-            this.hideLoading()
-            this.showMap()
-          },
-          fail: (res) => {
-            this.result = 'Connection failed, ' + res.errText
-            this.hideLoading()
-          }
+        let res = await this.axRobot.connectRobot({
+          robotId: Configs.robotId
         })
+        if (res.errCode === 0) {
+          this.result = 'Connection succeeded, robot ID is ' + res.robotId
+          this.axRobot.subscribeRealState({onStateChanged: this.onStateChanged})
+          this.axRobot.setEnableTrack(true)
+          this.showMap()
+        } else {
+          this.result = 'Connection failed, ' + res.errText
+        }
       } else {
         this.result =
           'Initialization failed. Please check whether appid and appsecret are correct.'
-        this.hideLoading()
       }
+      this.hideLoading()
     },
     async showMap () {
       let stateObj = await this.axRobot.getState()
@@ -77,6 +74,7 @@ export default {
         this.axMap = await this.axRobot.createMap('map')
         this.axMap.setAreaMap(stateObj.areaId)
         this.axMap.setClickMapCallback(this.onClickMap)
+        this.showRobotLoc(stateObj)
       }
     },
     onClickMap (e) {
@@ -93,16 +91,19 @@ export default {
         this.axRobot.moveTo({x: x, y: y})
       }
     },
-    onStateChanged (stateInfo) {
+    showRobotLoc (stateInfo) {
       if (this.axMap) {
         let coordinates = [stateInfo.x, stateInfo.y]
         let angle = stateInfo.yaw * 180 / Math.PI
         if (this.robotMarker) {
           this.axMap.updateMarker(this.robotMarker, coordinates, angle)
         } else {
-          this.robotMarker = this.axMap.addMarker('../../static/images/position.png', coordinates, angle)
+          this.robotMarker = this.axMap.addMarker('./static/images/position.png', coordinates, angle)
         }
       }
+    },
+    onStateChanged (stateInfo) {
+      this.showRobotLoc(stateInfo)
     }
   },
   activated () {
