@@ -96,6 +96,24 @@ export default {
           ]
         },
         {
+          name: '硬件控制',
+          page: '/',
+          childs: [
+            {
+              name: '灯带控制',
+              page: 'lightbelt'
+            },
+            {
+              name: '箱门控制',
+              page: 'boxdoor'
+            },
+            {
+              name: '喷雾器控制',
+              page: 'sprayer'
+            }
+          ]
+        },
+        {
           name: '动作任务',
           page: '/',
           childs: [
@@ -243,7 +261,8 @@ export default {
 .menubox {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: auto;
+  min-height: 100%;
   box-sizing: border-box;
   padding-top: 20px;
 }

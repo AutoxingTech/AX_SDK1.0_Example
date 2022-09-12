@@ -98,6 +98,7 @@ export default {
       if (stateObj && stateObj.areaId) {
         this.axMap = await this.axRobot.createMap('map')
         this.axMap.setAreaMap(stateObj.areaId)
+        this.axMap.setMapCenter([stateObj.x, stateObj.y])
         this.showRobotLoc(stateObj)
       }
     },
@@ -165,6 +166,7 @@ export default {
   },
   deactivated () {
     if (this.axRobot) {
+      this.robotMarker = null
       this.axRobot.destroy()
     }
   }

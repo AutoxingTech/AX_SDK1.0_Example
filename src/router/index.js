@@ -16,6 +16,9 @@ import multipoito from '@/page/motion/multipoito'
 import gohome from '@/page/motion/gohome'
 import poiaction from '@/page/task/poiaction'
 import numtask from '@/page/task/numtask'
+import lightbelt from '@/page/hardware/lightbelt'
+import boxdoor from '@/page/hardware/boxdoor'
+import sprayer from '@/page/hardware/sprayer'
 
 Vue.use(Router)
 
@@ -100,6 +103,21 @@ export default new Router({
       path: '/numtask',
       name: 'numtask',
       component: numtask
+    },
+    {
+      path: '/lightbelt',
+      name: 'lightbelt',
+      component: lightbelt
+    },
+    {
+      path: '/boxdoor',
+      name: 'boxdoor',
+      component: boxdoor
+    },
+    {
+      path: '/sprayer',
+      name: 'sprayer',
+      component: sprayer
     }
   ]
 })

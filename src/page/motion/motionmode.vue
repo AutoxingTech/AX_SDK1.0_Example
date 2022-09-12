@@ -194,6 +194,7 @@ export default {
   },
   deactivated () {
     if (this.axRobot) {
+      this.robotMarker = null
       this.axRobot.destroy()
     }
   }

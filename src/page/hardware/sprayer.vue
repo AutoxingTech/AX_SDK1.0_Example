@@ -2,21 +2,30 @@
   <div class="content_box">
     <h1>{{ msg }}</h1>
     <div class="mode_box">
-      <div>点击地图移动机器人：</div>
-      <div class="result_banner">{{ result }}</div>
-      <div class="map_banner div_center">
-        <div id="map" style="width:100%;height:500px"></div>
-      </div>
+      <div>机器人喷雾器控制：</div>
+      <div class="mode_item"><span class="mode_desc">喷雾器控制目前只在消杀机器人中支持</span></div>
+    </div>
+    <div class="mode_box">
+      <div>喷雾器控制验证：</div>
+      <div class="result_banner">{{result}}</div>
+    </div>
+    <div class="mode_box tools_banner">
+      <div class="btn_tools bg_btn" @click="openSprayer(1);">1档喷雾</div>
+      <div class="btn_tools bg_btn" @click="openSprayer(2);">2档喷雾</div>
+      <div class="btn_tools bg_btn" @click="openSprayer(3);">3档喷雾</div>
+      <div class="btn_tools bg_btn" @click="openSprayer(4);">4档喷雾</div>
+      <div class="btn_tools bg_btn" @click="openSprayer(5);">5档喷雾</div>
+      <div class="btn_blue bg_btn" @click="closeSprayer();">关闭喷雾</div>
     </div>
   </div>
 </template>
 
 <script>
-import { AXRobot, AppMode } from '@autoxing/robot-js-sdk-dev'
-import { Configs } from '../../../static/js/configs'
+import {AXRobot, AppMode} from '@autoxing/robot-js-sdk-dev'
+import {Configs} from '../../../static/js/configs'
 
 export default {
-  name: 'mapto',
+  name: 'sprayer',
   props: {
     showLoading: {
       type: Function,
@@ -31,9 +40,7 @@ export default {
     return {
       msg: 'Welcome to AutoXing Robot SDK1.0',
       result: '',
-      axRobot: null,
-      axMap: null,
-      clickPointId: null
+      axRobot: null
     }
   },
   mounted () {
@@ -44,11 +51,7 @@ export default {
         this.axRobot.destroy()
       }
       this.showLoading()
-      this.axRobot = new AXRobot(
-        Configs.appId,
-        Configs.appSecret,
-        AppMode.WAN_APP
-      )
+      this.axRobot = new AXRobot(Configs.appId, Configs.appSecret, AppMode.WAN_APP)
       let isOk = await this.axRobot.init()
       if (isOk) {
         let res = await this.axRobot.connectRobot({
@@ -56,55 +59,23 @@ export default {
         })
         if (res.errCode === 0) {
           this.result = 'Connection succeeded, robot ID is ' + res.robotId
-          this.axRobot.subscribeRealState({onStateChanged: this.onStateChanged})
-          this.axRobot.setEnableTrack(true)
-          this.showMap()
         } else {
           this.result = 'Connection failed, ' + res.errText
         }
       } else {
-        this.result =
-          'Initialization failed. Please check whether appid and appsecret are correct.'
+        this.result = 'Initialization failed. Please check whether appid and appsecret are correct.'
       }
       this.hideLoading()
     },
-    async showMap () {
-      let stateObj = await this.axRobot.getState()
-      if (stateObj && stateObj.areaId) {
-        this.axMap = await this.axRobot.createMap('map')
-        this.axMap.setAreaMap(stateObj.areaId)
-        this.axMap.setMapCenter([stateObj.x, stateObj.y])
-        this.axMap.setClickMapCallback(this.onClickMap)
-        this.showRobotLoc(stateObj)
-      }
+    async openSprayer (gear) {
+      this.showLoading()
+      await this.axRobot.openSprayer(gear)
+      this.hideLoading()
     },
-    onClickMap (e) {
-      if (e.type === 'LayerPoint') {
-        let x = e.data.geometry.coordinates[0]
-        let y = e.data.geometry.coordinates[1]
-        if (this.axMap) {
-          if (this.clickPointId) {
-            this.axMap.deleteFeature(this.clickPointId)
-            this.clickPointId = null
-          }
-          this.clickPointId = this.axMap.addPoint([x, y], {color: '#ff0000', radius: 7})
-        }
-        this.axRobot.moveTo({x: x, y: y})
-      }
-    },
-    showRobotLoc (stateInfo) {
-      if (this.axMap) {
-        let coordinates = [stateInfo.x, stateInfo.y]
-        let angle = stateInfo.yaw * 180 / Math.PI
-        if (this.robotMarker) {
-          this.axMap.updateMarker(this.robotMarker, coordinates, angle)
-        } else {
-          this.robotMarker = this.axMap.addMarker('./static/images/position.png', coordinates, angle)
-        }
-      }
-    },
-    onStateChanged (stateInfo) {
-      this.showRobotLoc(stateInfo)
+    async closeSprayer () {
+      this.showLoading()
+      await this.axRobot.closeSprayer()
+      this.hideLoading()
     }
   },
   activated () {
@@ -112,8 +83,8 @@ export default {
   },
   deactivated () {
     if (this.axRobot) {
-      this.robotMarker = null
       this.axRobot.destroy()
+      this.axRobot = null
     }
   }
 }
@@ -180,8 +151,47 @@ export default {
   align-items: center;
   justify-content: center;
 }
-.map_banner {
-  width: 100%;
+.tools_banner {
+  width: 600px;
+  margin-top: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  margin-bottom: 10px;
+}
+.btn_tools {
+  min-width: 70px;
+  height: 32px;
+  font-size: 14px;
+  color: #fff;
+  border-radius: 3px;
+  background: #26ac28;
+  padding: 0px 10px;
   box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0px 5px;
+}
+.btn_tools:active {
+  background: #249826;
+}
+.btn_blue {
+  min-width: 70px;
+  height: 32px;
+  font-size: 14px;
+  color: #fff;
+  border-radius: 3px;
+  background: #3d59e3;
+  padding: 0px 10px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0px 5px;
+}
+.btn_blue:active {
+  background: #2f4cdc;
 }
 </style>
