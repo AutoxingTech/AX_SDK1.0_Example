@@ -92,6 +92,14 @@ export default {
             {
               name: '回桩充电',
               page: 'gohome'
+            },
+            {
+              name: '设置速度',
+              page: 'setspeed'
+            },
+            {
+              name: '设置音量',
+              page: 'setvolume'
             }
           ]
         },

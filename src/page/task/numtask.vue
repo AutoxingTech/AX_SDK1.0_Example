@@ -150,7 +150,7 @@ export default {
     },
     selectPoi () {
       this.isNumSelect = false
-      this.dialogWidth = 535
+      this.dialogWidth = 545
       let placeData = this.axRobot.getPlaceList()
       this.poiList = []
       if (placeData && placeData.features) {
@@ -408,6 +408,6 @@ export default {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  margin: 5px;
+  margin: 5px 0px;
 }
 </style>

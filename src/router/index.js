@@ -19,6 +19,8 @@ import numtask from '@/page/task/numtask'
 import lightbelt from '@/page/hardware/lightbelt'
 import boxdoor from '@/page/hardware/boxdoor'
 import sprayer from '@/page/hardware/sprayer'
+import setvolume from '@/page/motion/setvolume'
+import setspeed from '@/page/motion/setspeed'
 
 Vue.use(Router)
 
@@ -118,6 +120,16 @@ export default new Router({
       path: '/sprayer',
       name: 'sprayer',
       component: sprayer
+    },
+    {
+      path: '/setvolume',
+      name: 'setvolume',
+      component: setvolume
+    },
+    {
+      path: '/setspeed',
+      name: 'setspeed',
+      component: setspeed
     }
   ]
 })

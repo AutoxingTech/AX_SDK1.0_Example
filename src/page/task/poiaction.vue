@@ -13,7 +13,7 @@
     </div>
     <Dialog
       title="选择站点及设置动作"
-      :width="535"
+      :width="545"
       :footer="true"
       cancelText="关闭"
       okText=""

@@ -76,8 +76,8 @@ export default {
         this.axMap = await this.axRobot.createMap('map')
         this.axMap.setAreaMap(stateObj.areaId)
         this.axMap.setMapCenter([stateObj.x, stateObj.y])
-        let angle = stateObj.yaw * 180 / Math.PI
-        this.axMap.editPose([stateObj.x, stateObj.y], {angle: angle})
+        let yaw = stateObj.yaw * 180 / Math.PI
+        this.axMap.editPose([stateObj.x, stateObj.y], {yaw: yaw})
       }
     },
     async reLocation () {
