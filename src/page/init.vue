@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import {AXRobot, AppMode} from '@autoxing/robot-js-sdk-dev'
+import {AXRobot, AppMode} from '@autoxing/robot-js-sdk'
 import {Configs} from '../../static/js/configs'
 
 export default {
@@ -66,12 +66,14 @@ export default {
       Configs.appId = this.appId
       Configs.appSecret = this.appSecret
       this.axRobot = new AXRobot(this.appId, this.appSecret, AppMode.WAN_APP)
-      let isOk = await this.axRobot.init()
-      if (isOk) {
-        let version = this.axRobot.getVersion()
-        this.result = 'Initialization succeeded. SDK version is ' + version + '.'
-      } else {
-        this.result = 'Initialization failed. Please check whether appid and appsecret are correct.'
+      try {
+        let isOk = await this.axRobot.init()
+        if (isOk) {
+          let version = this.axRobot.getVersion()
+          this.result = 'Initialization succeeded. SDK version is ' + version + '.'
+        }
+      } catch (e) {
+        this.result = e.errText
       }
       this.hideLoading()
     }

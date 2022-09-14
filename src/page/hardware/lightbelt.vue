@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import {AXRobot, AppMode, LightColor} from '@autoxing/robot-js-sdk-dev'
+import {AXRobot, AppMode, LightColor} from '@autoxing/robot-js-sdk'
 import {Configs} from '../../../static/js/configs'
 
 export default {
@@ -68,18 +68,18 @@ export default {
       }
       this.showLoading()
       this.axRobot = new AXRobot(Configs.appId, Configs.appSecret, AppMode.WAN_APP)
-      let isOk = await this.axRobot.init()
-      if (isOk) {
-        let res = await this.axRobot.connectRobot({
-          robotId: Configs.robotId
-        })
-        if (res.errCode === 0) {
-          this.result = 'Connection succeeded, robot ID is ' + res.robotId
-        } else {
-          this.result = 'Connection failed, ' + res.errText
+      try {
+        let isOk = await this.axRobot.init()
+        if (isOk) {
+          let res = await this.axRobot.connectRobot({
+            robotId: Configs.robotId
+          })
+          if (res.errCode === 0) {
+            this.result = 'Connection succeeded, robot ID is ' + res.robotId
+          }
         }
-      } else {
-        this.result = 'Initialization failed. Please check whether appid and appsecret are correct.'
+      } catch (e) {
+        this.result = e.errText
       }
       this.hideLoading()
     },
