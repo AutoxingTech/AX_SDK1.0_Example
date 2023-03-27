@@ -11,13 +11,14 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@autoxing/robot-js-sdk": "^1.0.68",
+    "@autoxing/robot-js-sdk-dev": "^1.1.47-test",
     "axios": "^0.27.2",
     "element-ui": "^2.15.9",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
-    "@autoxing/robot-js-sdk": "^1.0.1",
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.22.1",
     "babel-eslint": "^8.2.1",

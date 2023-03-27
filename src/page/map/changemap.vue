@@ -104,7 +104,7 @@ export default {
       let stateObj = await this.axRobot.getState()
       if (stateObj && stateObj.areaId) {
         this.curAreaId = stateObj.areaId
-        this.axMap = await this.axRobot.createMap('map')
+        this.axMap = await this.axRobot.createMap('map', null, Configs.fontUrl)
         this.axMap.setAreaMap(stateObj.areaId)
       }
     },
