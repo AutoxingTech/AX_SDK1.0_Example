@@ -2,28 +2,28 @@
   <div class="content_box">
     <h1>{{ msg }}</h1>
     <div class="mode_box">
-      <div>选择充电桩回桩充电：</div>
+      <div>{{$t('goHomeSelectCharge')}}：</div>
       <div class="result_banner">{{ result }}</div>
       <div class="map_banner div_center">
         <div id="map" style="width:100%;height:500px"></div>
         <div class="tools_banner">
-          <div class="btn_tools bg_btn" @click="selectCharge();">选择充电桩</div>
+          <div class="btn_tools bg_btn" @click="selectCharge();">{{$t('selectCharge')}}</div>
         </div>
       </div>
     </div>
     <Dialog
-      title="选择充电桩"
+      :title="$t('selectCharge')"
       :width="535"
       :footer="true"
-      cancelText="关闭"
-      okText=""
+      :cancelText="$t('dialogClose')"
+      :okText="$t('dialogOk')"
       @close="onClose"
       @cancel="onCancel"
       v-show="showDialog">
       <div class="poi_container">
         <div v-for="(item,i) in poiList" :key="i" class="poi_box">
           <div class="poi_name">{{item.name}}</div>
-          <div class="poi_type">类型：{{item.type}}</div>
+          <div class="poi_type">{{$t('type')}}：{{item.type}}</div>
           <div class="poi_pose">x: {{item.x}}, y: {{item.y}}, yaw: {{item.yaw}}</div>
           <div class="btn_tools bg_btn use_btn" @click="goHome(i);">GO HOME</div>
         </div>

@@ -2,20 +2,20 @@
   <div class="content_box">
     <h1>{{ msg }}</h1>
     <div class="mode_box">
-      <div>机器人喷雾器控制：</div>
-      <div class="mode_item"><span class="mode_desc">喷雾器控制目前只在消杀机器人中支持</span></div>
+      <div>{{$t('sprayerControl')}}：</div>
+      <div class="mode_item"><span class="mode_desc">{{$t('sprayerControlTitle')}}</span></div>
     </div>
     <div class="mode_box">
-      <div>喷雾器控制验证：</div>
+      <div>{{$t('sprayerControlVerify')}}：</div>
       <div class="result_banner">{{result}}</div>
     </div>
     <div class="mode_box tools_banner">
-      <div class="btn_tools bg_btn" @click="openSprayer(1);">1档喷雾</div>
-      <div class="btn_tools bg_btn" @click="openSprayer(2);">2档喷雾</div>
-      <div class="btn_tools bg_btn" @click="openSprayer(3);">3档喷雾</div>
-      <div class="btn_tools bg_btn" @click="openSprayer(4);">4档喷雾</div>
-      <div class="btn_tools bg_btn" @click="openSprayer(5);">5档喷雾</div>
-      <div class="btn_blue bg_btn" @click="closeSprayer();">关闭喷雾</div>
+      <div class="btn_tools bg_btn" @click="openSprayer(1);">{{$t('sprayer1')}}</div>
+      <div class="btn_tools bg_btn" @click="openSprayer(2);">{{$t('sprayer2')}}</div>
+      <div class="btn_tools bg_btn" @click="openSprayer(3);">{{$t('sprayer3')}}</div>
+      <div class="btn_tools bg_btn" @click="openSprayer(4);">{{$t('sprayer4')}}</div>
+      <div class="btn_tools bg_btn" @click="openSprayer(5);">{{$t('sprayer5')}}</div>
+      <div class="btn_blue bg_btn" @click="closeSprayer();">{{$t('sprayerClose')}}</div>
     </div>
   </div>
 </template>

@@ -2,34 +2,34 @@
   <div class="content_box">
     <h1>{{ msg }}</h1>
     <div class="mode_box">
-      <div>当前地图：</div>
+      <div>{{$t('currentMap')}}：</div>
       <div class="result_banner">{{ result }}</div>
       <div class="map_banner div_center">
         <div id="map" style="width: 100%;height: 500px"></div>
         <div class="state_banner">
-          <span class="state_label">手动: <span class="state_val">{{isManualMode?'是':'否'}}</span></span>
-          <span class="state_label">远控: <span class="state_val">{{isRemoteMode?'是':'否'}}</span></span>
-          <span class="state_label">急停: <span class="state_val">{{isEmergencyStop?'是':'否'}}</span></span>
-          <span class="state_label">障碍物: <span class="state_val">{{hasObstruction?'有':'无'}}</span></span>
-          <span class="state_label">执行任务: <span class="state_val">{{isTasking?'是':'否'}}</span></span>
-          <span class="state_label">前往充电: <span class="state_val">{{isGoHome?'是':'否'}}</span></span>
-          <span class="state_label">正在充电: <span class="state_val">{{isCharging?'是':'否'}}</span></span>
-          <span class="state_label">是否异常: <span class="state_val">{{isError?'是':'否'}}</span></span>
-          <span class="state_label">电量: <span class="state_val">{{battery}}%</span></span>
-          <span class="state_label">速度: <span class="state_val">{{speed}}m/s</span></span>
+          <span class="state_label">{{$t('manual')}}: <span class="state_val">{{isManualMode?$t('yes'):$t('no')}}</span></span>
+          <span class="state_label">{{$t('remote')}}: <span class="state_val">{{isRemoteMode?$t('yes'):$t('no')}}</span></span>
+          <span class="state_label">{{$t('emergencyStop')}}: <span class="state_val">{{isEmergencyStop?$t('yes'):$t('no')}}</span></span>
+          <span class="state_label">{{$t('obstacle')}}: <span class="state_val">{{hasObstruction?$t('exist'):$t('none')}}</span></span>
+          <span class="state_label">{{$t('performTask')}}: <span class="state_val">{{isTasking?$t('yes'):$t('no')}}</span></span>
+          <span class="state_label">{{$t('goHome')}}: <span class="state_val">{{isGoHome?$t('yes'):$t('no')}}</span></span>
+          <span class="state_label">{{$t('charing')}}: <span class="state_val">{{isCharging?$t('yes'):$t('no')}}</span></span>
+          <span class="state_label">{{$t('isAbnormal')}}: <span class="state_val">{{isError?$t('yes'):$t('no')}}</span></span>
+          <span class="state_label">{{$t('electricity')}}: <span class="state_val">{{battery}}%</span></span>
+          <span class="state_label">{{$t('speed')}}: <span class="state_val">{{speed}}m/s</span></span>
         </div>
         <div class="mode_banner">
-          <div class="btn_tools bg_btn" @click="changeVolume();">设置音量</div>
+          <div class="btn_tools bg_btn" @click="changeVolume();">{{$t('leftMenuSetVolume')}}</div>
         </div>
       </div>
     </div>
     <div style="width: 100%;height: 20px;"></div>
     <Dialog
-      title="请选择音量"
+      :title="$t('selectVolume')"
       :width="300"
       :footer="true"
-      cancelText="取消"
-      okText=""
+      :cancelText="$t('dialogCancel')"
+      :okText="$t('dialogOk')"
       @close="onClose"
       @cancel="onCancel"
       v-show="showDialog">

@@ -2,12 +2,12 @@
   <div class="content_box">
     <h1>{{ msg }}</h1>
     <div class="mode_box">
-      <div>当前地图：</div>
+      <div>{{$t('currentMap')}}：</div>
       <div class="result_banner">{{ result }}</div>
       <div class="map_banner div_center">
         <div id="map" style="width: 100%;height: 500px"></div>
         <div class="tools_banner">
-          <div class="btn_tools bg_btn angle_btn" @click="reLocation();">重新定位</div>
+          <div class="btn_tools bg_btn angle_btn" @click="reLocation();">{{$t('leftMenuRelocation')}}</div>
         </div>
       </div>
     </div>

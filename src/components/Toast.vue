@@ -10,7 +10,7 @@ export default {
   data () {
     return {
       isShow: false,
-      text: '系统繁忙，请稍后再试！',
+      text: this.$t('toast'),
       toastTimer: null
     }
   },

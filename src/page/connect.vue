@@ -2,21 +2,21 @@
   <div class="content_box">
     <h1>{{ msg }}</h1>
     <div class="mode_box">
-      <div>根据SDK初始化模式，将决定机器人的连接为：</div>
-      <div class="mode_item">1. AppMode.WAN_APP<span class="split_desc">-</span><span class="mode_desc">须指定机器人ID或由SDK自行选择在线机器中的某一台进行连接</span></div>
-      <div class="mode_item">2. AppMode.LOCAL_APP<span class="split_desc">-</span><span class="mode_desc">由SDK自行获取机器人ID，并进行连接</span></div>
-      <div class="mode_item">3. AppMode.LAN_APP<span class="split_desc">-</span><span class="mode_desc">指定或由SDK获取同一局域网内的某台机器进行连接</span></div>
+      <div>{{$t('connectTitle')}}：</div>
+      <div class="mode_item">1. AppMode.WAN_APP<span class="split_desc">-</span><span class="mode_desc">{{$t('connectWanAPP')}}</span></div>
+      <div class="mode_item">2. AppMode.LOCAL_APP<span class="split_desc">-</span><span class="mode_desc">{{$t('connectLocalAPP')}}</span></div>
+      <div class="mode_item">3. AppMode.LAN_APP<span class="split_desc">-</span><span class="mode_desc">{{$t('connectLanAPP')}}</span></div>
     </div>
     <div class="mode_box">
-      <div>机器人连接验证：</div>
+      <div>{{$t('robotConnectVerify')}}：</div>
       <div class="mode_item">
-        <div class="mode_field">机器人ID：</div>
-        <input v-model="robotId" class="mode_input" placeholder="请输入机器人ID" />
+        <div class="mode_field">{{$t('connectRobotId')}}：</div>
+        <input v-model="robotId" class="mode_input" :placeholder="$t('inputConnectRobotId')" />
       </div>
     </div>
     <div class="result_banner">{{result}}</div>
     <div class="mode_box tools_banner">
-      <div class="btn_tools bg_btn" @click="checkConnect();">连接验证</div>
+      <div class="btn_tools bg_btn" @click="checkConnect();">{{$t('connectVerify')}}</div>
     </div>
   </div>
 </template>

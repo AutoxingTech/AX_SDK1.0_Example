@@ -2,22 +2,22 @@
   <div class="content_box">
     <h1>{{ msg }}</h1>
     <div class="mode_box">
-      <div>机器人按次数执行任务：</div>
+      <div>{{$t('numTaskByRobot')}}：</div>
       <div class="result_banner">{{ result }}</div>
       <div class="map_banner div_center">
         <div id="map" style="width:100%;height:500px"></div>
         <div class="tools_banner">
-          <div class="btn_tools bg_btn" @click="selectNum();">选择次数：{{runNum===0?'循环':runNum+'次'}}</div>
-          <div class="btn_tools bg_btn" @click="selectPoi();">选择站点（多选）</div>
+          <div class="btn_tools bg_btn" @click="selectNum();">{{$t('selectNum')}}：{{runNum===0?$t('forEach'):runNum+$t('bout')}}</div>
+          <div class="btn_tools bg_btn" @click="selectPoi();">{{$t('selectPoiM')}}</div>
         </div>
       </div>
     </div>
     <Dialog
-      :title="isNumSelect?'选择任务执行次数':'选择站点（多选）'"
+      :title="isNumSelect?$t('selectTaskNum'):$t('selectPoiM')"
       :width="dialogWidth"
       :footer="true"
-      cancelText="取消"
-      :okText="isNumSelect?'':'确定'"
+      :cancelText="$t('dialogCancel')"
+      :okText="isNumSelect?'':$t('dialogOk')"
       @close="onClose"
       @cancel="onCancel"
       @ok="onConfirm"
@@ -32,7 +32,7 @@
           :class="'poi_box poi_btn'+(item.isSelected?' poi_box_selected':'')"
           @click="doSelect(i);">
           <div class="poi_name">{{item.name}}</div>
-          <div class="poi_type">类型：{{item.type}}</div>
+          <div class="poi_type">{{$t('type')}}：{{item.type}}</div>
           <div class="poi_pose">x: {{item.x}}, y: {{item.y}}, yaw: {{item.yaw}}</div>
           <div v-if="item.isSelected" class="sort_num">{{getSelectedIndex(i)}}</div>
         </div>
@@ -74,12 +74,12 @@ export default {
       poiList: [],
       selecteds: [],
       numList: [
-        {desc: '1次', num: 1},
-        {desc: '2次', num: 2},
-        {desc: '3次', num: 3},
-        {desc: '5次', num: 5},
-        {desc: '8次', num: 8},
-        {desc: '循环', num: 0}],
+        {desc: this.$t('bout1'), num: 1},
+        {desc: this.$t('bout2'), num: 2},
+        {desc: this.$t('bout3'), num: 3},
+        {desc: this.$t('bout5'), num: 5},
+        {desc: this.$t('bout8'), num: 8},
+        {desc: this.$t('forEach'), num: 0}],
       runNum: 1,
       isNumSelect: false,
       dialogWidth: 535

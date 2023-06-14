@@ -1,10 +1,10 @@
 <template>
   <div class="main">
     <div class="main_header">
-      <div class="header_left">机器人SDK开发实例</div>
+      <div class="header_left">{{$t('myHeaderTitle')}}</div>
       <div class="locale_banner div_center">
-        <div @click="changeLocale(0)" :class="'zh_label bg_btn'+(localeIndex==0?' selected_label':'')">中文</div>
-        <div @click="changeLocale(1)" :class="'en_label bg_btn'+(localeIndex==1?' selected_label':'')">EN</div>
+        <div @click="changeLocale('zh-CN')" :class="'zh_label bg_btn'+(locale==='zh-CN'?' selected_label':'')">中文</div>
+        <div @click="changeLocale('en-US')" :class="'en_label bg_btn'+(locale==='en-US'?' selected_label':'')">EN</div>
       </div>
     </div>
   </div>
@@ -14,14 +14,17 @@
 export default {
   data () {
     return {
-      localeIndex: 0
+      locale: 'zh-CN'
     }
   },
   mounted () {
+    this.locale = localStorage.getItem('example-language')
   },
   methods: {
-    changeLocale: function (index) {
-      this.localeIndex = index
+    changeLocale: function (lang) {
+      this.locale = lang
+      this.$i18n.locale = lang
+      localStorage.setItem('example-language', lang)
     }
   }
 }

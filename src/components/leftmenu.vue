@@ -28,139 +28,139 @@ export default {
     return {
       menuItems: [
         {
-          name: 'SDK初始化',
+          name: this.$t('leftMenuSDKInit'),
           page: '/'
         },
         {
-          name: '连接机器人',
+          name: this.$t('leftMenuConnectRobot'),
           page: 'connect'
         },
         {
-          name: '地图与位置',
+          name: this.$t('leftMenuMapAndPosition'),
           page: '/',
           childs: [
             {
-              name: '地图显示',
+              name: this.$t('leftMenuMapShowMap'),
               page: 'showmap'
             },
             {
-              name: '切换地图',
+              name: this.$t('leftMenuChangeMap'),
               page: 'changemap'
             },
             {
-              name: '更新地图',
+              name: this.$t('leftMenuUpdateMap'),
               page: 'updatemap'
             },
             {
-              name: '机器人实时状态',
+              name: this.$t('leftMenuRealPose'),
               page: 'realpose'
             },
             {
-              name: '重新定位',
+              name: this.$t('leftMenuRelocation'),
               page: 'relocation'
             }
           ]
         },
         {
-          name: '机器人运动',
+          name: this.$t('leftMenuRobotMove'),
           page: '/',
           childs: [
             {
-              name: '切换运动模式',
+              name: this.$t('leftMenuChangeMoveMode'),
               page: 'motionmode'
             },
             {
-              name: '单步运动',
+              name: this.$t('leftMenuStep'),
               page: 'step'
             },
             {
-              name: '双步运动（摇杆）',
+              name: this.$t('leftMenuRocker'),
               page: 'rocker'
             },
             {
-              name: '点选定点运动（地图）',
+              name: this.$t('leftMenuMapTo'),
               page: 'mapto'
             },
             {
-              name: '站点定点运动',
+              name: this.$t('leftMenuPoiTo'),
               page: 'poito'
             },
             {
-              name: '多站点运动',
+              name: this.$t('leftMenuMultiPoiTo'),
               page: 'multipoito'
             },
             {
-              name: '回桩充电',
+              name: this.$t('leftMenuGoHome'),
               page: 'gohome'
             },
             {
-              name: '设置速度',
+              name: this.$t('leftMenuSetSpeed'),
               page: 'setspeed'
             },
             {
-              name: '设置音量',
+              name: this.$t('leftMenuSetVolume'),
               page: 'setvolume'
             }
           ]
         },
         {
-          name: '硬件控制',
+          name: this.$t('leftMenuHardwareControl'),
           page: '/',
           childs: [
             {
-              name: '灯带控制',
+              name: this.$t('leftMenuLightBelt'),
               page: 'lightbelt'
             },
             {
-              name: '箱门控制',
+              name: this.$t('leftMenuBoxDoor'),
               page: 'boxdoor'
             },
             {
-              name: '喷雾器控制',
+              name: this.$t('leftMenuSprayer'),
               page: 'sprayer'
             }
           ]
         },
         {
-          name: '动作任务',
+          name: this.$t('leftMenuActionTask'),
           page: '/',
           childs: [
             {
-              name: '站点动作任务',
+              name: this.$t('leftMenuPoiAction'),
               page: 'poiaction'
             },
             {
-              name: '按次数执行任务',
+              name: this.$t('leftMenuNumTask'),
               page: 'numtask'
-            },
-            {
-              name: '任务结束自动回充',
-              page: ''
-            },
-            {
-              name: '跨层执行任务',
-              page: ''
-            },
-            {
-              name: '配送任务',
-              page: ''
-            },
-            {
-              name: '消杀任务',
-              page: ''
-            },
-            {
-              name: '写字楼任务',
-              page: ''
-            },
-            {
-              name: '引领任务',
-              page: ''
-            },
-            {
-              name: '电话取物任务',
-              page: ''
             }
+            // {
+            //   name: '任务结束自动回充',
+            //   page: ''
+            // },
+            // {
+            //   name: '跨层执行任务',
+            //   page: ''
+            // },
+            // {
+            //   name: '配送任务',
+            //   page: ''
+            // },
+            // {
+            //   name: '消杀任务',
+            //   page: ''
+            // },
+            // {
+            //   name: '写字楼任务',
+            //   page: ''
+            // },
+            // {
+            //   name: '引领任务',
+            //   page: ''
+            // },
+            // {
+            //   name: '电话取物任务',
+            //   page: ''
+            // }
           ]
         }
       ],

@@ -2,30 +2,30 @@
   <div class="content_box">
     <h1>{{ msg }}</h1>
     <div class="mode_box">
-      <div>SDK初始化提供如下三种方式：</div>
-      <div class="mode_item">1. AppMode.WAN_APP<span class="split_desc">-</span><span class="mode_desc">广域网模式，主要针对小程序、移动终端App、PC端web等</span></div>
-      <div class="mode_item">2. AppMode.LOCAL_APP<span class="split_desc">-</span><span class="mode_desc">本地模式，主要针对上位机终端App等</span></div>
-      <div class="mode_item">3. AppMode.LAN_APP<span class="split_desc">-</span><span class="mode_desc">局域网模式，主要针对Wi-Fi局域网内移动终端（如pad、手机）等</span></div>
+      <div>{{$t('initTitle')}}：</div>
+      <div class="mode_item">1. AppMode.WAN_APP<span class="split_desc">-</span><span class="mode_desc">{{$t('initWanApp')}}</span></div>
+      <div class="mode_item">2. AppMode.LOCAL_APP<span class="split_desc">-</span><span class="mode_desc">{{$t('initLocalApp')}}</span></div>
+      <div class="mode_item">3. AppMode.LAN_APP<span class="split_desc">-</span><span class="mode_desc">{{$t('initLanApp')}}</span></div>
     </div>
     <div class="mode_box">
-      <div>SDK初始化鉴权参数：</div>
-      <div class="mode_item">1. appId<span class="split_desc">-</span><span class="mode_desc">应用ID，可向相关运营人员申请提供</span></div>
-      <div class="mode_item">2. appSecret<span class="split_desc">-</span><span class="mode_desc">数据请求密钥，可向相关运营人员申请提供</span></div>
+      <div>{{$t('initAuth')}}：</div>
+      <div class="mode_item">1. appId<span class="split_desc">-</span><span class="mode_desc">{{$t('initAuth1')}}</span></div>
+      <div class="mode_item">2. appSecret<span class="split_desc">-</span><span class="mode_desc">{{$t('initAuth2')}}</span></div>
     </div>
     <div class="mode_box">
-      <div>SDK初始化验证：</div>
+      <div>{{$t('initVerify')}}：</div>
       <div class="mode_item">
         <div class="mode_field">appId：</div>
-        <input v-model="appId" class="mode_input" placeholder="请输入appId" />
+        <input v-model="appId" class="mode_input" :placeholder="$t('initInputAppId')" />
       </div>
       <div class="mode_item">
         <div class="mode_field">appSecret：</div>
-        <input v-model="appSecret" class="mode_input" placeholder="请输入appSecret" />
+        <input v-model="appSecret" class="mode_input" :placeholder="$t('initInputAppSecret')" />
       </div>
     </div>
     <div class="result_banner">{{result}}</div>
     <div class="mode_box tools_banner">
-      <div class="btn_tools bg_btn" @click="checkInitSDK();">SDK初始化验证</div>
+      <div class="btn_tools bg_btn" @click="checkInitSDK();">{{$t('initVerify')}}</div>
     </div>
   </div>
 </template>

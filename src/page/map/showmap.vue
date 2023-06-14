@@ -2,7 +2,7 @@
   <div class="content_box">
     <h1>{{ msg }}</h1>
     <div class="mode_box">
-      <div>当前地图：</div>
+      <div>{{$t('currentMap')}}：</div>
       <div class="result_banner">{{ result }}</div>
       <div class="map_banner div_center">
         <div id="map" style="width:100%;height:500px"></div>

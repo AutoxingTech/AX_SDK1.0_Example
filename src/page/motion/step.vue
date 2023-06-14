@@ -2,19 +2,19 @@
   <div class="content_box">
     <h1>{{ msg }}</h1>
     <div class="mode_box">
-      <div>机器人单步运动，即为分别一次控制机器人的角速度和线速度：</div>
+      <div>{{$t('stepTitle')}}：</div>
       <div class="mode_item">
-        1. 无避障运动<span class="split_desc">-</span><span class="mode_desc">在进行无避障运动控制时，需要注意机器人运动安全，避免碰撞</span>
+        1. {{$t('noObstacleMove')}}<span class="split_desc">-</span><span class="mode_desc">{{$t('noObstacleMoveTitle')}}</span>
       </div>
       <div class="mode_item">
-        2. 角速度<span class="split_desc">-</span><span class="mode_desc">负数时机器人往右转，正数时机器人往左转，角速度最大限制为0.5r/s</span>
+        2. {{$t('angularVelocity')}}<span class="split_desc">-</span><span class="mode_desc">{{$t('angularVelocityTitle')}}</span>
       </div>
       <div class="mode_item">
-        3. 线速度<span class="split_desc">-</span><span class="mode_desc">负数时机器人后退，正数时机器人前进，后退最大限制0.2m/s，前进最大限制为0.5m/s</span>
+        3. {{$t('lineVelocity')}}<span class="split_desc">-</span><span class="mode_desc">{{$t('lineVelocityTitle')}}</span>
       </div>
     </div>
     <div class="mode_box">
-      <div>单运动验证：</div>
+      <div>{{$t('stepMove')}}：</div>
       <div class="result_banner">{{ result }}</div>
       <div class="control_banner div_center">
         <div class="div_center">

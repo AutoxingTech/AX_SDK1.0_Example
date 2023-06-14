@@ -2,24 +2,24 @@
   <div class="content_box">
     <h1>{{ msg }}</h1>
     <div class="mode_box">
-      <div>机器人箱门控制：</div>
-      <div class="mode_item"><span class="mode_desc">箱门控制目前只在酒店机器人中支持</span></div>
+      <div>{{$t('boxDoorControl')}}：</div>
+      <div class="mode_item"><span class="mode_desc">{{$t('boxDoorControlTitle')}}</span></div>
     </div>
     <div class="mode_box">
-      <div>箱门控制验证：</div>
+      <div>{{$t('boxDoorVerify')}}：</div>
       <div class="result_banner">{{result}}</div>
     </div>
     <div class="mode_box tools_banner">
-      <div class="btn_tools bg_btn" @click="openBoxDoor(1);">打开1号门</div>
-      <div class="btn_tools bg_btn" @click="openBoxDoor(2);">打开2号门</div>
-      <div class="btn_tools bg_btn" @click="openBoxDoor(3);">打开3号门</div>
-      <div class="btn_tools bg_btn" @click="openBoxDoor(4);">打开4号门</div>
+      <div class="btn_tools bg_btn" @click="openBoxDoor(1);">{{$t('open1Door')}}</div>
+      <div class="btn_tools bg_btn" @click="openBoxDoor(2);">{{$t('open2Door')}}</div>
+      <div class="btn_tools bg_btn" @click="openBoxDoor(3);">{{$t('open3Door')}}</div>
+      <div class="btn_tools bg_btn" @click="openBoxDoor(4);">{{$t('open4Door')}}</div>
     </div>
     <div class="mode_box tools_banner">
-      <div class="btn_blue bg_btn" @click="closeBoxDoor(1);">关闭1号门</div>
-      <div class="btn_blue bg_btn" @click="closeBoxDoor(2);">关闭2号门</div>
-      <div class="btn_blue bg_btn" @click="closeBoxDoor(3);">关闭3号门</div>
-      <div class="btn_blue bg_btn" @click="closeBoxDoor(4);">关闭4号门</div>
+      <div class="btn_blue bg_btn" @click="closeBoxDoor(1);">{{$t('close1Door')}}</div>
+      <div class="btn_blue bg_btn" @click="closeBoxDoor(2);">{{$t('close2Door')}}</div>
+      <div class="btn_blue bg_btn" @click="closeBoxDoor(3);">{{$t('close3Door')}}</div>
+      <div class="btn_blue bg_btn" @click="closeBoxDoor(4);">{{$t('close4Door')}}</div>
     </div>
   </div>
 </template>

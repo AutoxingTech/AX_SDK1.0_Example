@@ -2,7 +2,7 @@
   <div v-show="isShow">
       <div class="progress_mask"></div>
       <div class="progress_dialog dialog_banner">
-          努力加载中...
+          {{$t('loading')}}
       </div>
   </div>
 </template>
@@ -15,12 +15,12 @@ export default {
   data () {
     return {
       isShow: false,
-      text: '努力加载中...'
+      text: this.$t('loading')
     }
   },
   methods: {
     show: function (text) {
-      this.text = '努力加载中...'
+      this.text = this.$t('loading')
       if (typeof text === 'string' &&
         text !== '') {
         this.text = text

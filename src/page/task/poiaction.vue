@@ -2,28 +2,28 @@
   <div class="content_box">
     <h1>{{ msg }}</h1>
     <div class="mode_box">
-      <div>机器人移动到站点并完成工作：</div>
+      <div>{{$t('poiActionTitle')}}：</div>
       <div class="result_banner">{{ result }}</div>
       <div class="map_banner div_center">
         <div id="map" style="width:100%;height:500px"></div>
         <div class="tools_banner">
-          <div class="btn_tools bg_btn" @click="selectPoi();">选择站点及设置动作</div>
+          <div class="btn_tools bg_btn" @click="selectPoi();">{{$t('selectPoiAndAction')}}</div>
         </div>
       </div>
     </div>
     <Dialog
-      title="选择站点及设置动作"
+      :title="$t('selectPoiAndAction')"
       :width="545"
       :footer="true"
-      cancelText="关闭"
-      okText=""
+      :cancelText="$t('dialogClose')"
+      :okText="$t('dialogOk')"
       @close="onClose"
       @cancel="onCancel"
       v-show="showDialog">
       <div class="poi_container">
         <div v-for="(item,i) in poiList" :key="i" class="poi_box">
           <div class="poi_name">{{item.name}}</div>
-          <div class="poi_type">类型：{{item.type}}</div>
+          <div class="poi_type">{{$t('type')}}：{{item.type}}</div>
           <div class="poi_pose">x: {{item.x}}, y: {{item.y}}, yaw: {{item.yaw}}</div>
           <div class="tools_box">
             <div class="btn_tools bg_btn use_btn" @click="doSettings(i);">Settings</div>
@@ -35,11 +35,11 @@
       </div>
     </Dialog>
     <Dialog
-      title="设置站点动作"
+      :title="$t('setPoiAction')"
       :width="300"
       :footer="true"
-      cancelText="取消"
-      okText="确定"
+      :cancelText="$t('dialogCancel')"
+      :okText="$t('dialogOk')"
       @close="onSettingClose"
       @cancel="onSettingCancel"
       @ok="onSettingConfirm"
@@ -87,12 +87,12 @@ export default {
       showSettingDialog: false,
       poiList: [],
       actionList: [
-        {desc: '播放指定语音(间隔10秒重播)', type: ActionType.PlayAudio, isSelected: false, interval: 10, url: 'https://autoxingtest1.oss-cn-beijing.aliyuncs.com/mp3/autoxing/yijia_task_running.mp3'},
-        {desc: '打开箱门(须人机交互继续任务)', type: ActionType.OpenDoor, isSelected: false, doors: [2, 3]},
-        {desc: '停留1分钟', type: ActionType.Pause, isSelected: false, pauseTime: 60},
-        {desc: '打开4档喷雾', type: ActionType.GearOperation, isSelected: false, gear: 4},
-        {desc: '关闭喷雾', type: ActionType.GearOperation, isSelected: false, gear: 0},
-        {desc: '停止播放语音', type: ActionType.StopAudio, isSelected: false}],
+        {desc: this.$t('poiAction1'), type: ActionType.PlayAudio, isSelected: false, interval: 10, url: 'https://autoxingtest1.oss-cn-beijing.aliyuncs.com/mp3/autoxing/yijia_task_running.mp3'},
+        {desc: this.$t('poiAction2'), type: ActionType.OpenDoor, isSelected: false, doors: [2, 3]},
+        {desc: this.$t('poiAction3'), type: ActionType.Pause, isSelected: false, pauseTime: 60},
+        {desc: this.$t('poiAction4'), type: ActionType.GearOperation, isSelected: false, gear: 4},
+        {desc: this.$t('poiAction5'), type: ActionType.GearOperation, isSelected: false, gear: 0},
+        {desc: this.$t('poiAction6'), type: ActionType.StopAudio, isSelected: false}],
       selecteds: []
     }
   },

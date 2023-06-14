@@ -2,36 +2,36 @@
   <div class="content_box">
     <h1>{{ msg }}</h1>
     <div class="mode_box">
-      <div>机器人灯带控制分为两种方式：</div>
-      <div class="mode_item">1. 分段灯带（如餐厅机器人）<span class="split_desc">-</span><span class="mode_desc">指机器人安装的直线灯带，由上往下或由左往右进行分段控制</span></div>
-      <div class="mode_item">2. 完整灯带（如消杀机器人）<span class="split_desc">-</span><span class="mode_desc">指机器人安装的周身灯带，设置控制灯带颜色即可</span></div>
+      <div>{{$t('lightBeltControl')}}：</div>
+      <div class="mode_item">1. {{$t('lightBeltSection')}}<span class="split_desc">-</span><span class="mode_desc">{{$t('lightBeltSectionTitle')}}</span></div>
+      <div class="mode_item">2. {{$t('lightBeltFull')}}<span class="split_desc">-</span><span class="mode_desc">{{$t('lightBeltFullTitle')}}</span></div>
     </div>
     <div class="mode_box">
-      <div>分段灯带控制验证：</div>
+      <div>{{$t('sectionControlVerify')}}：</div>
       <div class="result_banner">{{result}}</div>
     </div>
     <div class="mode_box tools_banner">
-      <div class="btn_tools bg_btn" @click="openSubLight(0);">红灯1段</div>
-      <div class="btn_tools bg_btn" @click="openSubLight(1);">绿灯2段</div>
-      <div class="btn_tools bg_btn" @click="openSubLight(2);">蓝灯3段</div>
-      <div class="btn_tools bg_btn" @click="openSubLight(3);">黄灯4段</div>
+      <div class="btn_tools bg_btn" @click="openSubLight(0);">{{$t('redLight1')}}</div>
+      <div class="btn_tools bg_btn" @click="openSubLight(1);">{{$t('greenLight2')}}</div>
+      <div class="btn_tools bg_btn" @click="openSubLight(2);">{{$t('blueLight3')}}</div>
+      <div class="btn_tools bg_btn" @click="openSubLight(3);">{{$t('yellowLight4')}}</div>
     </div>
     <div class="mode_box tools_banner">
-      <div class="btn_blue bg_btn" @click="closeSubLight(0);">关灯1段</div>
-      <div class="btn_blue bg_btn" @click="closeSubLight(1);">关灯2段</div>
-      <div class="btn_blue bg_btn" @click="closeSubLight(2);">关灯3段</div>
-      <div class="btn_blue bg_btn" @click="closeSubLight(3);">关灯4段</div>
+      <div class="btn_blue bg_btn" @click="closeSubLight(0);">{{$t('closeLight1')}}</div>
+      <div class="btn_blue bg_btn" @click="closeSubLight(1);">{{$t('closeLight2')}}</div>
+      <div class="btn_blue bg_btn" @click="closeSubLight(2);">{{$t('closeLight3')}}</div>
+      <div class="btn_blue bg_btn" @click="closeSubLight(3);">{{$t('closeLight4')}}</div>
     </div>
     <div class="mode_box">
-      <div>完整灯带控制验证：</div>
+      <div>{{$t('fullControlVerify')}}：</div>
       <div class="result_banner"></div>
     </div>
     <div class="mode_box tools_banner">
-      <div class="btn_tools bg_btn" @click="openLight(0);">红灯</div>
-      <div class="btn_tools bg_btn" @click="openLight(1);">绿灯</div>
-      <div class="btn_tools bg_btn" @click="openLight(2);">蓝灯</div>
-      <div class="btn_tools bg_btn" @click="openLight(3);">黄灯</div>
-      <div class="btn_blue bg_btn" @click="closeLight();">关灯</div>
+      <div class="btn_tools bg_btn" @click="openLight(0);">{{$t('redLight')}}</div>
+      <div class="btn_tools bg_btn" @click="openLight(1);">{{$t('greenLight')}}</div>
+      <div class="btn_tools bg_btn" @click="openLight(2);">{{$t('blueLight')}}</div>
+      <div class="btn_tools bg_btn" @click="openLight(3);">{{$t('yellowLight')}}</div>
+      <div class="btn_blue bg_btn" @click="closeLight();">{{$t('closeLight')}}</div>
     </div>
   </div>
 </template>

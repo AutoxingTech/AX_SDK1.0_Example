@@ -2,21 +2,21 @@
   <div class="content_box">
     <h1>{{ msg }}</h1>
     <div class="mode_box">
-      <div>选择Poi移动机器人：</div>
+      <div>{{$t('selectPoiMoveRobot')}}：</div>
       <div class="result_banner">{{ result }}</div>
       <div class="map_banner div_center">
         <div id="map" style="width:100%;height:500px"></div>
         <div class="tools_banner">
-          <div class="btn_tools bg_btn" @click="selectPoi();">选择站点（多选）</div>
+          <div class="btn_tools bg_btn" @click="selectPoi();">{{$t('selectPoiM')}}</div>
         </div>
       </div>
     </div>
     <Dialog
-      title="选择站点（多选）"
+      :title="$t('selectPoiM')"
       :width="535"
       :footer="true"
-      cancelText="取消"
-      okText="确定"
+      :cancelText="$t('dialogClose')"
+      :okText="$t('dialogOk')"
       @close="onClose"
       @cancel="onCancel"
       @ok="onConfirm"
@@ -26,7 +26,7 @@
           :class="'poi_box poi_btn'+(item.isSelected?' poi_box_selected':'')"
           @click="doSelect(i);">
           <div class="poi_name">{{item.name}}</div>
-          <div class="poi_type">类型：{{item.type}}</div>
+          <div class="poi_type">{{$t('type')}}：{{item.type}}</div>
           <div class="poi_pose">x: {{item.x}}, y: {{item.y}}, yaw: {{item.yaw}}</div>
           <div v-if="item.isSelected" class="sort_num">{{getSelectedIndex(i)}}</div>
         </div>
