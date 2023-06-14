@@ -43,11 +43,11 @@ export default {
         this.axRobot.destroy()
       }
       this.showLoading()
-      this.axRobot = new AXRobot(
-        Configs.appId,
-        Configs.appSecret,
-        AppMode.WAN_APP
-      )
+      if (Configs.mode === 1 || Configs.mode === '1') {
+        this.axRobot = new AXRobot(Configs.appId, Configs.appSecret, AppMode.WAN_APP, Configs.globalServicePath, Configs.globalWsPath)
+      } else {
+        this.axRobot = new AXRobot(Configs.appId, Configs.appSecret, AppMode.WAN_APP)
+      }
       try {
         let isOk = await this.axRobot.init()
         if (isOk) {
