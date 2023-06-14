@@ -82,7 +82,7 @@ export default {
     async reLocation () {
       this.showLoading()
       const pose = this.axMap.endEditPose()
-      await this.axRobot.resetPose(pose)
+      await this.axRobot.resetPose(pose, false)
       this.axMap.editPose([pose.x, pose.y], {yaw: pose.yaw})
       this.hideLoading()
     }
