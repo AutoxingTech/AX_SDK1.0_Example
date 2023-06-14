@@ -24,9 +24,27 @@ export default {
       default: null
     }
   },
+  watch: {
+    '$i18n.locale' (newValue) {
+      this.initMenuItems()
+    }
+  },
   data () {
     return {
-      menuItems: [
+      menuItems: [],
+      menuIndex: 0,
+      childIndex: -1
+    }
+  },
+  onLoad () {},
+  mounted () {
+    this.initMenuItems()
+    this.init()
+  },
+  onShow () {},
+  methods: {
+    initMenuItems () {
+      this.menuItems = [
         {
           name: this.$t('leftMenuSDKInit'),
           page: '/'
@@ -163,18 +181,11 @@ export default {
             // }
           ]
         }
-      ],
-      menuIndex: 0,
-      childIndex: -1
-    }
-  },
-  onLoad () {},
-  mounted () {
-    this.init()
-  },
-  onShow () {},
-  methods: {
+      ]
+      this.$forceUpdate()
+    },
     init: function () {
+      console.log('3333333333333333333333')
       this.setCurMenuIndex()
     },
     setCurMenuIndex: function () {
