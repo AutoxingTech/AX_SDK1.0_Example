@@ -82,7 +82,8 @@ export default {
         {desc: this.$t('forEach'), num: 0}],
       runNum: 1,
       isNumSelect: false,
-      dialogWidth: 535
+      dialogWidth: 535,
+      areaId: null
     }
   },
   mounted () {
@@ -119,6 +120,7 @@ export default {
     async showMap () {
       let stateObj = await this.axRobot.getState()
       if (stateObj && stateObj.areaId) {
+        this.areaId = stateObj.areaId
         this.axMap = await this.axRobot.createMap('map', null, Configs.fontUrl)
         this.axMap.setAreaMap(stateObj.areaId)
         this.axMap.setMapCenter([stateObj.x, stateObj.y])
@@ -196,7 +198,7 @@ export default {
       let len = this.selecteds.length
       for (let i = 0; i < len; i++) {
         let poiObj = this.poiList[this.selecteds[i]]
-        task.pts.push({x: poiObj.x, y: poiObj.y, yaw: poiObj.yaw, ext: {name: poiObj.name}})
+        task.pts.push({x: poiObj.x, y: poiObj.y, yaw: poiObj.yaw, areaId: this.areaId, ext: {name: poiObj.name}})
       }
       let isOk = await this.axRobot.startTask(task)
       this.hideLoading()

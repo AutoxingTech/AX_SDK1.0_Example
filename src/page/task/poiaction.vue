@@ -93,7 +93,8 @@ export default {
         {desc: this.$t('poiAction4'), type: ActionType.GearOperation, isSelected: false, gear: 4},
         {desc: this.$t('poiAction5'), type: ActionType.GearOperation, isSelected: false, gear: 0},
         {desc: this.$t('poiAction6'), type: ActionType.StopAudio, isSelected: false}],
-      selecteds: []
+      selecteds: [],
+      areaId: null
     }
   },
   mounted () {
@@ -130,6 +131,7 @@ export default {
     async showMap () {
       let stateObj = await this.axRobot.getState()
       if (stateObj && stateObj.areaId) {
+        this.areaId = stateObj.areaId
         this.axMap = await this.axRobot.createMap('map', null, Configs.fontUrl)
         this.axMap.setAreaMap(stateObj.areaId)
         this.axMap.setMapCenter([stateObj.x, stateObj.y])
@@ -221,7 +223,7 @@ export default {
           stepActs.push({type: actObj.type})
         }
       }
-      task.pts.push({x: poiObj.x, y: poiObj.y, yaw: poiObj.yaw, ext: {name: poiObj.name}, stepActs: stepActs})
+      task.pts.push({x: poiObj.x, y: poiObj.y, yaw: poiObj.yaw, areaId: this.areaId, ext: {name: poiObj.name}, stepActs: stepActs})
       let isOk = await this.axRobot.startTask(task)
       this.hideLoading()
       if (!isOk) {
