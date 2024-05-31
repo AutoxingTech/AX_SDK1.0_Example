@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@autoxing/robot-js-sdk": "^1.0.77",
-    "@autoxing/robot-js-sdk-dev": "^1.1.60",
+    "@autoxing/robot-js-sdk-dev": "^1.1.165",
     "axios": "^0.27.2",
     "element-ui": "^2.15.9",
     "vue": "^2.5.2",

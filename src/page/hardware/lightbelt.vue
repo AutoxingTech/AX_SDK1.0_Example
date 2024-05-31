@@ -37,7 +37,10 @@
 </template>
 
 <script>
-import {AXRobot, AppMode, LightColor} from '@autoxing/robot-js-sdk'
+// eslint-disable-next-line standard/object-curly-even-spacing
+import { AXRobot as AXRobotProd, AppMode as AppModeProd, LightColor} from '@autoxing/robot-js-sdk'
+// eslint-disable-next-line standard/object-curly-even-spacing
+import { AXRobot as AXRobotDev, AppMode as AppModeDev} from '@autoxing/robot-js-sdk-dev'
 import {Configs} from '../../../static/js/configs'
 
 export default {
@@ -68,9 +71,11 @@ export default {
       }
       this.showLoading()
       if (Configs.mode === 1 || Configs.mode === '1') {
-        this.axRobot = new AXRobot(Configs.appId, Configs.appSecret, AppMode.WAN_APP, Configs.globalServicePath, Configs.globalWsPath)
+        this.axRobot = new AXRobotProd(Configs.appId, Configs.appSecret, AppModeProd.WAN_APP, Configs.globalServicePath, Configs.globalWsPath)
+      } else if (Configs.mode === -1 || Configs.mode === '-1') {
+        this.axRobot = new AXRobotDev(Configs.appId, Configs.appSecret, AppModeDev.WAN_APP)
       } else {
-        this.axRobot = new AXRobot(Configs.appId, Configs.appSecret, AppMode.WAN_APP)
+        this.axRobot = new AXRobotProd(Configs.appId, Configs.appSecret, AppModeProd.WAN_APP)
       }
       try {
         let isOk = await this.axRobot.init()

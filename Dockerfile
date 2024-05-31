@@ -1,4 +1,5 @@
-FROM nginx:1.23
+# FROM nginx:1.23
+FROM registry.cn-beijing.aliyuncs.com/autoxing/frontend-template:latest
 
 WORKDIR /usr/share/nginx/html
 

@@ -1,3 +1,4 @@
+<!-- eslint-disable standard/object-curly-even-spacing -->
 <template>
   <div class="content_box">
     <h1>{{ msg }}</h1>
@@ -31,7 +32,10 @@
 </template>
 
 <script>
-import {AXRobot, AppMode} from '@autoxing/robot-js-sdk-dev'
+// eslint-disable-next-line standard/object-curly-even-spacing
+import { AXRobot as AXRobotProd, AppMode as AppModeProd} from '@autoxing/robot-js-sdk'
+// eslint-disable-next-line standard/object-curly-even-spacing
+import { AXRobot as AXRobotDev, AppMode as AppModeDev} from '@autoxing/robot-js-sdk-dev'
 import {Configs} from '../../static/js/configs'
 
 export default {
@@ -66,9 +70,11 @@ export default {
       Configs.appId = this.appId
       Configs.appSecret = this.appSecret
       if (Configs.mode === 1 || Configs.mode === '1') {
-        this.axRobot = new AXRobot(this.appId, this.appSecret, AppMode.WAN_APP, Configs.globalServicePath, Configs.globalWsPath)
+        this.axRobot = new AXRobotProd(Configs.appId, Configs.appSecret, AppModeProd.WAN_APP, Configs.globalServicePath, Configs.globalWsPath)
+      } else if (Configs.mode === -1 || Configs.mode === '-1') {
+        this.axRobot = new AXRobotDev(Configs.appId, Configs.appSecret, AppModeDev.WAN_APP)
       } else {
-        this.axRobot = new AXRobot(this.appId, this.appSecret, AppMode.WAN_APP)
+        this.axRobot = new AXRobotProd(Configs.appId, Configs.appSecret, AppModeProd.WAN_APP)
       }
       try {
         let isOk = await this.axRobot.init()
