@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { AXRobot, AppMode } from '@autoxing/robot-js-sdk'
+import { AXRobot, AppMode } from '@autoxing/robot-js-sdk-dev'
 import { Configs } from '../../../static/js/configs'
 
 export default {
