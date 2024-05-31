@@ -41,7 +41,7 @@
 import { AXRobot as AXRobotProd, AppMode as AppModeProd, LightColor} from '@autoxing/robot-js-sdk'
 // eslint-disable-next-line standard/object-curly-even-spacing
 import { AXRobot as AXRobotDev, AppMode as AppModeDev} from '@autoxing/robot-js-sdk-dev'
-import {Configs} from '../../../static/js/configs'
+import {Configs} from '../../../static/js/config'
 
 export default {
   name: 'lightbelt',
