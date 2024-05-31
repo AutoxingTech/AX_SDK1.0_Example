@@ -39,6 +39,7 @@ jobs:
       - name: Create Docker Image
         run: |
           export DOCKER_IMAGE=${{ secrets.ALIYUN_REGISTRY }}/autoxing/${{ secrets.ALIYUN_IMAGE_NAME }}
+          docker login --username=${{ secrets.ALIYUN_USERNAME }} --password=${{ secrets.ALIYUN_PASSWORD }} ${{ secrets.ALIYUN_REGISTRY }}
           docker build -t ${DOCKER_IMAGE}:${GITHUB_SHA} .
           docker tag ${DOCKER_IMAGE}:${GITHUB_SHA} ${DOCKER_IMAGE}:${{steps.get_tagname.outputs.VERSION}}
           docker tag ${DOCKER_IMAGE}:${GITHUB_SHA} ${DOCKER_IMAGE}:latest
