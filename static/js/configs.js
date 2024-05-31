@@ -4,6 +4,6 @@ export const Configs = {
   robotId: '',
   fontUrl: './static/font/{fontstack}/{range}.pbf',
   mode: 0, //0: 国内，1海外
-  globalServicePath: 'https://apiglobal.autoxing.com/',
-  globalWsPath: 'wss://serviceglobal.autoxing.com/'
+  globalServicePath: 'https://devapi.autoxing.com/',
+  globalWsPath: 'wss://retail.autoxing.com/robot-control-dev/mapping'
 }
