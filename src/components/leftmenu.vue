@@ -185,7 +185,6 @@ export default {
       this.$forceUpdate()
     },
     init: function () {
-      console.log('3333333333333333333333')
       this.setCurMenuIndex()
     },
     setCurMenuIndex: function () {

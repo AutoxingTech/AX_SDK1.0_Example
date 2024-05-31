@@ -38,7 +38,7 @@
 import { AXRobot as AXRobotProd, AppMode as AppModeProd} from '@autoxing/robot-js-sdk'
 // eslint-disable-next-line standard/object-curly-even-spacing
 import { AXRobot as AXRobotDev, AppMode as AppModeDev} from '@autoxing/robot-js-sdk-dev'
-import { Configs } from '../../../static/js/config'
+
 import Dialog from '../../components/Dialog'
 
 export default {
@@ -72,18 +72,18 @@ export default {
         this.axRobot.destroy()
       }
       this.showLoading()
-      if (Configs.mode === 1 || Configs.mode === '1') {
-        this.axRobot = new AXRobotProd(Configs.appId, Configs.appSecret, AppModeProd.WAN_APP, Configs.globalServicePath, Configs.globalWsPath)
-      } else if (Configs.mode === -1 || Configs.mode === '-1') {
-        this.axRobot = new AXRobotDev(Configs.appId, Configs.appSecret, AppModeDev.WAN_APP)
+      if (window.Configs.mode === 1 || window.Configs.mode === '1') {
+        this.axRobot = new AXRobotProd(window.Configs.appId, window.Configs.appSecret, AppModeProd.WAN_APP, window.Configs.globalServicePath, window.Configs.globalWsPath)
+      } else if (window.Configs.mode === -1 || window.Configs.mode === '-1') {
+        this.axRobot = new AXRobotDev(window.Configs.appId, window.Configs.appSecret, AppModeDev.WAN_APP)
       } else {
-        this.axRobot = new AXRobotProd(Configs.appId, Configs.appSecret, AppModeProd.WAN_APP)
+        this.axRobot = new AXRobotProd(window.Configs.appId, window.Configs.appSecret, AppModeProd.WAN_APP)
       }
       try {
         let isOk = await this.axRobot.init()
         if (isOk) {
           let res = await this.axRobot.connectRobot({
-            robotId: Configs.robotId
+            robotId: window.Configs.robotId
           })
           if (res.errCode === 0) {
             this.result = 'Connection succeeded, robot ID is ' + res.robotId
@@ -100,7 +100,7 @@ export default {
     async showMap () {
       let stateObj = await this.axRobot.getState()
       if (stateObj && stateObj.areaId) {
-        this.axMap = await this.axRobot.createMap('map', null, Configs.fontUrl)
+        this.axMap = await this.axRobot.createMap('map', null, window.Configs.fontUrl)
         this.axMap.setAreaMap(stateObj.areaId)
         this.axMap.setMapCenter([stateObj.x, stateObj.y])
         this.showRobotLoc(stateObj)
