@@ -2,6 +2,26 @@
 
 > robot sdk example
 
+## Edit config.js
+
+``` bash
+# path
+./static/js/config.js
+
+# config: mode
+0: 国内（domestic） 1: 海外（overseas） -1: 测试（test）
+
+# config: globalServicePath、globalWsPath
+eg1:
+mode: 0
+globalServicePath、globalWsPath is ""
+
+eg2:
+mode: 1 
+globalServicePath -> https://apiglobal.autoxing.com/
+globalWsPath -> wss://serviceglobal.autoxing.com/
+```
+
 ## Build Setup
 
 ``` bash
