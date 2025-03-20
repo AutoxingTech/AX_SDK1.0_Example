@@ -13,15 +13,16 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Check if DEPLOY_SERVICE_NAME exists
+        id: check_service_name
+        run: |
+          if [ -z "${{ vars.DEPLOY_SERVICE_NAME }}" ]; then
+            echo "DEPLOY_SERVICE_NAME is empty, setting to empty string"
+            echo "service_name=" >> $GITHUB_ENV
+          else
+            echo "DEPLOY_SERVICE_NAME is set to ${{ vars.DEPLOY_SERVICE_NAME }}"
+            echo "service_name=${{ vars.DEPLOY_SERVICE_NAME }}" >> $GITHUB_ENV
+          fi
       - name: Deploy Service
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SERVER }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          port: ${{ secrets.SERVER_PORT }}
-          script: |
-            docker login --username=${{ secrets.ALIYUN_USERNAME }} --password=${{ secrets.ALIYUN_PASSWORD }} ${{ secrets.ALIYUN_REGISTRY }}
-            cd ${{ secrets.SERVER_DOCKER_COMPOSE_FILE_PATH }}
-            docker-compose pull
-            docker-compose up -d
+        run: |
+          curl -i -X PATCH -H "Authorization:${{secrets.DEPLOY_TOKEN}}" "${{ vars.DEPLOY_URL }}/${{ env.service_name }}?wait_result=true"
